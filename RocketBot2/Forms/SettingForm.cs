@@ -4,9 +4,8 @@ using PoGo.NecroBot.Logic;
 using PoGo.NecroBot.Logic.Model;
 using PoGo.NecroBot.Logic.Model.Settings;
 using PoGo.NecroBot.Logic.State;
+using PoGo.NecroBot.Logic.Utils;
 using POGOProtos.Enums;
-using PokemonGo.RocketAPI.Enums;
-using PokemonGo.RocketAPI.Helpers;
 using RocketBot2.Forms.advSettings;
 using RocketBot2.Helpers;
 using RocketBot2.Win32;
@@ -374,7 +373,7 @@ namespace RocketBot2.Forms
 
         #region Help button for API key
 
-        private void cbUseEggIncubators_CheckedChanged(object sender, EventArgs e)
+        private void CbUseEggIncubators_CheckedChanged(object sender, EventArgs e)
         {
             cbUseLimitedEggIncubators.Enabled = cbUseEggIncubators.Checked;
         }
@@ -517,8 +516,8 @@ namespace RocketBot2.Forms
         }
 
         private void PopulateDevice()
-        { 
-            var device = DeviceInfoHelper.GetRandomIosDevice();
+        {
+            var device = new POGOLib.Official.Util.Device.DeviceWrapper().DeviceInfo;// DeviceInfoHelper.GetRandomIosDevice();
             DeviceIdTb.Text = device.DeviceId;
             AndroidBoardNameTb.Text = device.AndroidBoardName;
             AndroidBootloaderTb.Text = device.AndroidBootloader;
@@ -900,7 +899,7 @@ namespace RocketBot2.Forms
 
         private void RandomIDBtn_Click(object sender, EventArgs e)
         {
-            DeviceIdTb.Text = DeviceInfoHelper.GetRandomIosDevice().DeviceId;
+            DeviceIdTb.Text = new POGOLib.Official.Util.Device.DeviceWrapper().DeviceInfo.DeviceId;
         }
 
         private void RandomDeviceBtn_Click(object sender, EventArgs e)

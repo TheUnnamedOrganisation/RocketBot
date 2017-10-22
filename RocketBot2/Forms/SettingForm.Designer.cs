@@ -1868,7 +1868,7 @@
             this.cbUseEggIncubators.TabIndex = 1;
             this.cbUseEggIncubators.Text = "Use Incubators";
             this.cbUseEggIncubators.UseVisualStyleBackColor = true;
-            this.cbUseEggIncubators.CheckedChanged += new System.EventHandler(this.cbUseEggIncubators_CheckedChanged);
+            this.cbUseEggIncubators.CheckedChanged += new System.EventHandler(this.CbUseEggIncubators_CheckedChanged);
             // 
             // cbCatchPoke
             // 
