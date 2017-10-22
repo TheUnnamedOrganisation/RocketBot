@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Windows.Forms;
 using PoGo.NecroBot.Logic.Model.Settings;
-using PokemonGo.RocketAPI;
 
 namespace RocketBot2.Forms
 {
@@ -86,14 +85,6 @@ namespace RocketBot2.Forms
             }
             DialogResult = DialogResult.OK;
             Close();
-        }
-
-        private void TxtCustomHash_TextChanged(object sender, EventArgs e)
-        {
-            if (txtCustomHash.Text.Contains(Constants.ApiEndPoint))
-            {
-                txtCustomHash.Text.Replace(Constants.ApiEndPoint, "");
-            }
         }
 
         private void RadHashServer_Click(object sender, EventArgs e)

@@ -23,9 +23,6 @@ using POGOProtos.Inventory.Item;
 using POGOProtos.Map.Fort;
 using POGOProtos.Map.Pokemon;
 using POGOProtos.Networking.Responses;
-using PokemonGo.RocketAPI;
-using PokemonGo.RocketAPI.Extensions;
-using PokemonGo.RocketAPI.Helpers;
 using RocketBot2.CommandLineUtility;
 using RocketBot2.Helpers;
 using RocketBot2.Models;
@@ -46,6 +43,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Telegram.Bot.Helpers;
 
 #endregion
 
@@ -266,7 +264,7 @@ namespace RocketBot2.Forms
                 LastClearLog = DateTime.Now;
             }
 
-            if (text.Contains($"Hash API server (https://pokehash.buddyauth.com/{Constants.ApiEndPoint}) might down!"))
+            if (text.Contains($"Hash API server (https://pokehash.buddyauth.com/api/147_1/hash) might down!"))
                 Instance.LoadPokeStopsTimer.Enabled = false;
 
             Instance.logTextBox.SelectionColor = color;
@@ -372,7 +370,7 @@ namespace RocketBot2.Forms
             List<FortData> pokeStops = new List<FortData>();
             try
             {
-                GetMapObjectsResponse mapObjects = await _session.Client.Map.GetMapObjects().ConfigureAwait(false);
+                GetMapObjectsResponse mapObjects = await _session.Client.GetMapObjects().ConfigureAwait(false);
                 List<FortData> forts = new List<FortData>(mapObjects.MapCells.SelectMany(p => p.Forts).ToList());
                 List<FortData> sessionForts = new List<FortData>(_session.Forts);
 
@@ -661,11 +659,11 @@ namespace RocketBot2.Forms
 
                 _currentLatLng = latlng;
 
-                _session.Client.Settings.DefaultLatitude = _currentLatLng.Lat;
-                _session.Client.Settings.DefaultLongitude = _currentLatLng.Lng;
+                _session.Client.ClientSettings.DefaultLatitude = _currentLatLng.Lat;
+                _session.Client.ClientSettings.DefaultLongitude = _currentLatLng.Lng;
 
-                _session.Client.Settings.AccountLatitude = _currentLatLng.Lat;
-                _session.Client.Settings.AccountLongitude = _currentLatLng.Lng;
+                _session.Client.ClientSettings.AccountLatitude = _currentLatLng.Lat;
+                _session.Client.ClientSettings.AccountLongitude = _currentLatLng.Lng;
 
                 settings.LocationConfig.DefaultLatitude = _currentLatLng.Lat;
                 settings.LocationConfig.DefaultLongitude = _currentLatLng.Lng;
@@ -728,11 +726,11 @@ namespace RocketBot2.Forms
                     File.Delete(lastPosFile);
                 }
 
-                _session.Client.Settings.DefaultLatitude = pos.Lat;
-                _session.Client.Settings.DefaultLongitude = pos.Lng;
+                _session.Client.ClientSettings.DefaultLatitude = pos.Lat;
+                _session.Client.ClientSettings.DefaultLongitude = pos.Lng;
 
-                _session.Client.Settings.AccountLatitude = pos.Lat;
-                _session.Client.Settings.AccountLongitude = pos.Lng;
+                _session.Client.ClientSettings.AccountLatitude = pos.Lat;
+                _session.Client.ClientSettings.AccountLongitude = pos.Lng;
 
                 settings.LocationConfig.DefaultLatitude = pos.Lat;
                 settings.LocationConfig.DefaultLongitude = pos.Lng;
@@ -854,11 +852,11 @@ namespace RocketBot2.Forms
             if (!_botStarted && Dist > 0)
             {
                 double Alt = await _session.ElevationService.GetElevation(newLocation.Lat, newLocation.Lng).ConfigureAwait(false);
-                _session.Client.Settings.DefaultLatitude = newLocation.Lat;
-                _session.Client.Settings.DefaultLongitude = newLocation.Lng;
+                _session.Client.ClientSettings.DefaultLatitude = newLocation.Lat;
+                _session.Client.ClientSettings.DefaultLongitude = newLocation.Lng;
 
-                _session.Client.Settings.AccountLatitude = newLocation.Lat;
-                _session.Client.Settings.AccountLongitude = newLocation.Lng;
+                _session.Client.ClientSettings.AccountLatitude = newLocation.Lat;
+                _session.Client.ClientSettings.AccountLongitude = newLocation.Lng;
 
                 settings.LocationConfig.DefaultLatitude = newLocation.Lat;
                 settings.LocationConfig.DefaultLongitude = newLocation.Lng;
@@ -1310,10 +1308,9 @@ namespace RocketBot2.Forms
             SetState(false);
             try
             {
-                if (_session.Client.Download.ItemTemplates == null)
-                    await _session.Client.Download.GetItemTemplates().ConfigureAwait(false);
+                var GetItemTemplates = await _session.Client.GetItemTemplates().ConfigureAwait(false);
 
-                var templates = _session.Client.Download.ItemTemplates.Where(x => x.PokemonSettings != null)
+                var templates = GetItemTemplates.ItemTemplates.Where(x => x.PokemonSettings != null)
                         .Select(x => x.PokemonSettings)
                         .ToList();
 
@@ -1359,7 +1356,7 @@ namespace RocketBot2.Forms
                 }
 
                 Instance.lblPokemonList.Text = _session.Translation.GetTranslation(TranslationString.AmountPkmSeenCaught, _totalData, 252, _totalCaptures, 252) +
-                    $" | Storage: {_session.Client.Player.PlayerData.MaxPokemonStorage} (Pokémons: {pokemons.Count()}, Eggs: {_session.Inventory.GetEggs().Result.Count()}) [Depolyments: {NewCount}]";
+                    $" | Storage: {_session.Client.Player.Data.MaxPokemonStorage} (Pokémons: {pokemons.Count()}, Eggs: {_session.Inventory.GetEggs().Result.Count()}) [Depolyments: {NewCount}]";
 
                 var items =
                     _session.Inventory.GetItems().Result
@@ -1377,7 +1374,7 @@ namespace RocketBot2.Forms
                     await FlpItemsClean(items, appliedItems).ConfigureAwait(false);
 
                     Instance.lblInventory.Text =
-                            $"Types: {items.Count()} | Total: {_session.Inventory.GetTotalItemCount().Result} | Storage: {_session.Client.Player.PlayerData.MaxItemStorage}";
+                            $"Types: {items.Count()} | Total: {_session.Inventory.GetTotalItemCount().Result} | Storage: {_session.Client.Player.Data.MaxItemStorage}";
                 }
                 OldItemsCount = itemscount;
             }
@@ -1503,9 +1500,7 @@ namespace RocketBot2.Forms
         private void InitializeBot(Action<ISession, StatisticsAggregator> onBotStarted)
         {
             var ioc = TinyIoC.TinyIoCContainer.Current;
-            //Setup Logger for API
-            APIConfiguration.Logger = new APILogListener();
-
+ 
             //Application.EnableVisualStyles();
             var strCulture = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
 
@@ -1615,11 +1610,11 @@ namespace RocketBot2.Forms
                 {
                     var lat = double.Parse(crds[0]);
                     var lng = double.Parse(crds[1]);
-                    _session.Client.Settings.DefaultLatitude = lat;
-                    _session.Client.Settings.DefaultLongitude = lng;
+                    _session.Client.ClientSettings.DefaultLatitude = lat;
+                    _session.Client.ClientSettings.DefaultLongitude = lng;
 
-                    _session.Client.Settings.AccountLatitude = lat;
-                    _session.Client.Settings.AccountLongitude = lng;
+                    _session.Client.ClientSettings.AccountLatitude = lat;
+                    _session.Client.ClientSettings.AccountLongitude = lng;
 
                     settings.LocationConfig.DefaultLatitude = lat;
                     settings.LocationConfig.DefaultLongitude = lng;
@@ -1778,7 +1773,7 @@ namespace RocketBot2.Forms
                         if (settings.Auth.APIConfig.UseCustomAPI)
                             urlcheck = $"{settings.Auth.APIConfig.UrlHashServices}{settings.Auth.APIConfig.EndPoint}";
                         else
-                            urlcheck = $"https://pokehash.buddyauth.com/{Constants.ApiEndPoint}";
+                            urlcheck = $"https://pokehash.buddyauth.com/{_session.Client.ClientSettings.EndPoint}";
                         Logger.Write($"Hash End-Point Set to '{urlcheck}'", LogLevel.Info, ConsoleColor.Blue);
                         HttpResponseMessage response = client.PostAsync(urlcheck, null).Result;
                         string AuthKey = response.Headers.GetValues("X-AuthToken").FirstOrDefault();
@@ -1827,7 +1822,7 @@ namespace RocketBot2.Forms
             stats.DirtyEvent +=
                 () =>
                 {
-                    GetPlayerResponse x = _session.Client.Player.GetPlayer().Result;
+                    GetPlayerResponse x = _session.Client.GetPlayer().Result;
                     string warn = x.Warn ? "*(Flagged)*-" : null;
 
                     SetStatusText($"[RocketBot2 v{strVersion}] Team: {x.PlayerData.Team} -  {warn}" +
@@ -1908,8 +1903,8 @@ namespace RocketBot2.Forms
                             _session.ReInitSessionWithNextBot(_bot);
 
                             _playerOverlay.Markers.Clear();
-                            _session.Client.Settings.DefaultLatitude = _bot.AccountLatitude;
-                            _session.Client.Settings.DefaultLongitude = _bot.AccountLongitude;
+                            _session.Client.ClientSettings.DefaultLatitude = _bot.AccountLatitude;
+                            _session.Client.ClientSettings.DefaultLongitude = _bot.AccountLongitude;
 
                             settings.LocationConfig.DefaultLatitude = _bot.AccountLatitude;
                             settings.LocationConfig.DefaultLongitude = _bot.AccountLongitude;
@@ -1917,8 +1912,8 @@ namespace RocketBot2.Forms
                             settings.Auth.CurrentAuthConfig.AccountLatitude = _bot.AccountLatitude;
                             settings.Auth.CurrentAuthConfig.AccountLongitude = _bot.AccountLongitude;
 
-                            _session.Client.Settings.AccountLatitude = _bot.AccountLatitude;
-                            _session.Client.Settings.AccountLongitude = _bot.AccountLongitude;
+                            _session.Client.ClientSettings.AccountLatitude = _bot.AccountLatitude;
+                            _session.Client.ClientSettings.AccountLongitude = _bot.AccountLongitude;
 
                             _currentLatLng.Lat = _bot.AccountLatitude;
                             _currentLatLng.Lng = _bot.AccountLongitude;

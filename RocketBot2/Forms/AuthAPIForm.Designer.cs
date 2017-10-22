@@ -1,5 +1,3 @@
-using PokemonGo.RocketAPI;
-
 namespace RocketBot2.Forms
 {
     partial class AuthAPIForm
@@ -80,7 +78,7 @@ namespace RocketBot2.Forms
             this.radHashServer.Name = "radHashServer";
             this.radHashServer.Size = new System.Drawing.Size(250, 25);
             this.radHashServer.TabIndex = 5;
-            this.radHashServer.Text = "PogoDev Hash Server API - " + Constants.API_VERSION;
+            this.radHashServer.Text = "PogoDev Hash Server API";
             this.radHashServer.UseVisualStyleBackColor = true;
             this.radHashServer.Click += new System.EventHandler(this.RadHashServer_Click);
             // 
@@ -126,7 +124,7 @@ namespace RocketBot2.Forms
             this.radCustomHash.Name = "radCustomHash";
             this.radCustomHash.Size = new System.Drawing.Size(240, 25);
             this.radCustomHash.TabIndex = 9;
-            this.radCustomHash.Text = "Custom Hash Server API - " + Constants.API_VERSION;
+            this.radCustomHash.Text = "Custom Hash Server API";
             this.radCustomHash.UseVisualStyleBackColor = true;
             this.radCustomHash.Click += new System.EventHandler(this.RadCustomHash_Click);
             // 
@@ -147,7 +145,6 @@ namespace RocketBot2.Forms
             this.txtCustomHash.Name = "txtCustomHash";
             this.txtCustomHash.Size = new System.Drawing.Size(350, 30);
             this.txtCustomHash.TabIndex = 10;
-            this.txtCustomHash.TextChanged += new System.EventHandler(this.TxtCustomHash_TextChanged);
             // 
             // AuthAPIForm
             // 

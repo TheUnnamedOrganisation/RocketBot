@@ -1,11 +1,11 @@
 ﻿using PoGo.NecroBot.Logic.Model;
 using PoGo.NecroBot.Logic.PoGoUtils;
 using PoGo.NecroBot.Logic.State;
+using POGOLib.Official.Util;
 using POGOProtos.Data;
 using POGOProtos.Enums;
 using POGOProtos.Inventory.Item;
 using POGOProtos.Settings.Master;
-using PokemonGo.RocketAPI.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
