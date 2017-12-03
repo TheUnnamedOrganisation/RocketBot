@@ -125,8 +125,8 @@
     <Reference Include="GeoCoordinate.NetStandard1, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\GeoCoordinate.NetStandard1.1.0.1\lib\netstandard1.1\GeoCoordinate.NetStandard1.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Protobuf, Version=3.4.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\Google.Protobuf.3.4.1\lib\net45\Google.Protobuf.dll</HintPath>
+    <Reference Include="Google.Protobuf, Version=3.5.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\Google.Protobuf.3.5.0\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
     <Reference Include="GPSOAuthSharp.NetStandard1, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\GPSOAuthSharp.NetStandard1.1.0.1\lib\netstandard1.1\GPSOAuthSharp.NetStandard1.dll</HintPath>
@@ -168,17 +168,14 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="POGOLib.Core">
-      <HintPath>$(SolutionDir)\packages\POGOLib.Core.1.6.5\lib\netstandard1.1\POGOLib.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="POGOLib.Core, Version=1.6.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\POGOLib.Core.1.6.9\lib\netstandard1.1\POGOLib.Core.dll</HintPath>
     </Reference>
-    <Reference Include="POGOLib.Core.Google">
-      <HintPath>$(SolutionDir)\packages\POGOLib.Core.Google.1.6.6\lib\netstandard1.1\POGOLib.Core.Google.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="POGOLib.Core.Google, Version=1.6.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\POGOLib.Core.Google.1.6.9\lib\netstandard1.1\POGOLib.Core.Google.dll</HintPath>
     </Reference>
-    <Reference Include="POGOProtos.Core">
-      <HintPath>$(SolutionDir)\packages\POGOProtos.Core.2.19.1\lib\net45\POGOProtos.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="POGOProtos.Core, Version=2.19.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\POGOProtos.Core.2.19.2\lib\net45\POGOProtos.Core.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Linq, Version=2.1.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\Remotion.Linq.2.1.2\lib\net45\Remotion.Linq.dll</HintPath>
@@ -259,13 +256,11 @@
     <Reference Include="Telegram.Bot, Version=13.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\Telegram.Bot.13.2.1\lib\netstandard1.1\Telegram.Bot.dll</HintPath>
     </Reference>
-    <Reference Include="WebDriver">
-      <HintPath>..\packages\Selenium.WebDriver.3.7.0\lib\net45\WebDriver.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="WebDriver, Version=3.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\Selenium.WebDriver.3.8.0\lib\net45\WebDriver.dll</HintPath>
     </Reference>
-    <Reference Include="WebDriver.Support">
-      <HintPath>$(SolutionDir)\packages\Selenium.Support.3.7.0\lib\net45\WebDriver.Support.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="WebDriver.Support, Version=3.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\Selenium.Support.3.8.0\lib\net45\WebDriver.Support.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
