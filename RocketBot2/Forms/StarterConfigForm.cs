@@ -7,7 +7,7 @@ using PoGo.NecroBot.Logic.Logging;
 using PoGo.NecroBot.Logic.Model.Settings;
 using PoGo.NecroBot.Logic.Service.Elevation;
 using PoGo.NecroBot.Logic.State;
-using PokemonGo.RocketAPI.Enums;
+using PoGo.NecroBot.Logic;
 using System.Diagnostics;
 
 namespace RocketBot2.Forms
